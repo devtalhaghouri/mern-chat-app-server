@@ -10,13 +10,14 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_KEY_SECRET,
 });
+const PORT = process.env.PORT | 5500;
 
 const server = http.createServer(app);
 
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://127.0.0.1:5173",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
     methods: ["GET", "POST"],
   },
@@ -54,6 +55,6 @@ io.on("connection", (socket) => {
     socket.leave(userData?._id);
   });
 });
-server.listen(process.env.PORT, () => {
-  console.log(`Server is runing is Port: http://localhost:${process.env.PORT}`);
+server.listen(PORT, () => {
+  console.log(`Server is runing is Port: http://localhost:${PORT}`);
 });
